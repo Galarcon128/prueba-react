@@ -18,13 +18,11 @@ function SelectItem({
   label = "",
   select,
   fullWidth = false,
-  onSelectOption = ()=>{},
+  onSelectOption = () => { },
   error = false
 }) {
-  const [expedient, setExpedient] = useState(select);
   const handleChange = (event) => {
-    setExpedient(event.target.value);
-    onSelectOption(options[event.target.value])
+    onSelectOption(event.target.value)
   };
 
   return (
@@ -33,13 +31,13 @@ function SelectItem({
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
-        value={expedient}
+        value={select}
         label={label}
         onChange={handleChange}
         error={error}
       >
         {options.map((label, index) => (
-          <MenuItem key={"option_" + index + "_" + label} value={index}>{label}</MenuItem>
+          <MenuItem key={"option_" + index + "_" + label} value={label}>{label}</MenuItem>
         ))}
       </Select>
     </FormControl>
@@ -51,32 +49,35 @@ const initialArgs = {
   idMatch: undefined,
   currentInfo: undefined,
   infoMatchId: undefined,
-  response: undefined,
-  reason: undefined,
+  response: "",
+  reason: "",
   observations: "",
+  exp: "",
   errors: []
 }
 
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS_TYPE.setIdColor:
-      return {...state, idColor: action.value}
+      return { ...state, idColor: action.value }
     case ACTIONS_TYPE.setIdMatch:
-      return {...state, idMatch: action.value}
+      return { ...state, idMatch: action.value }
     case ACTIONS_TYPE.setCurrentInfo:
-      return {...state, currentInfo: action.value}
+      return { ...state, currentInfo: action.value }
     case ACTIONS_TYPE.setInfoMatchId:
-      return {...state, infoMatchId: action.value}
+      return { ...state, infoMatchId: action.value }
     case ACTIONS_TYPE.setResponse:
-      return {...state, response: action.value}
+      return { ...state, response: action.value }
     case ACTIONS_TYPE.setReason:
-      return {...state, reason: action.value}
+      return { ...state, reason: action.value }
+    case ACTIONS_TYPE.setExp:
+      return { ...state, exp: action.value }
     case ACTIONS_TYPE.setObservations:
-      return {...state, observations: action.value}
+      return { ...state, observations: action.value }
     case ACTIONS_TYPE.clean:
-       return {...initialArgs}
+      return { ...initialArgs }
     case ACTIONS_TYPE.check:
-        return{...state, errors: action.value}
+      return { ...state, errors: action.value }
     default:
       return state
   }
@@ -89,7 +90,7 @@ export default function Form() {
   const userData = useGetDataUser()
 
   console.log(state);
-  
+
 
   if (!userData) {
     return <div style={{ width: "100%", display: 'flex', justifyContent: 'space-around' }} > <CircularProgress /></div>
@@ -99,17 +100,20 @@ export default function Form() {
       <UserTable userData={userData} />
       <div style={{ display: !isMobile ? 'flex' : 'block' }} >
         <div>
-          <SelectItem options={["captación", "crédito"]} label='Expediente' select={0} />
+          <SelectItem options={["captación", "crédito"]} label='Expediente'
+          select={state.exp}
+          onSelectOption={(value) => { dispatch({ type: ACTIONS_TYPE.setExp, value: value }) }}
+          />
         </div>
-       
+
         <div>
           <TabIdentification docs={userData.docs} state={state} dispatch={dispatch} />
           <ExternalLinks state={state} dispatch={dispatch} />
         </div>
-        
+
       </div>
       <br />
-      <div style={{ border: '1px solid black', padding: "20px"}} >
+      <div style={{ border: '1px solid black', padding: "20px" }} >
         <p><b>Respuesta de Solicitud</b></p>
         <div style={{ display: 'flex', gap: "20px", flexDirection: isMobile ? "column" : "row" }} >
           <div style={{ width: "450px" }}>
@@ -118,15 +122,17 @@ export default function Form() {
                 <tr>
                   <td><p><b>Respuesta</b></p></td>
                   <td><SelectItem options={["Aprobada", "Rechazada"]} label='Respuesta' fullWidth
-                    error={state.errors.find(e=>e==="response")}
-                    onSelectOption={(value)=>{dispatch({type: ACTIONS_TYPE.setResponse, value: value})}}
+                    error={state.errors.find(e => e === "response")}
+                    select={state.response}
+                    onSelectOption={(value) => { dispatch({ type: ACTIONS_TYPE.setResponse, value: value }) }}
                   /></td>
                 </tr>
                 <tr>
                   <td><p><b>Motivo</b></p></td>
                   <td><SelectItem options={["Fotografia del cliente no coincide", "Fotografia borrosa o manipulada", "Fotografia no visible"]} label='Motivo' fullWidth
-                    error={state.errors.find(e=>e==="reason")}
-                    onSelectOption={(value)=>{dispatch({type: ACTIONS_TYPE.setReason, value: value})}}
+                    error={state.errors.find(e => e === "reason")}
+                    select={state.reason}
+                    onSelectOption={(value) => { dispatch({ type: ACTIONS_TYPE.setReason, value: value }) }}
                   /></td>
                 </tr>
               </tbody>
@@ -141,7 +147,7 @@ export default function Form() {
               rows={4}
               maxRows={4}
               value={state.observations}
-              onChange={(e)=>{dispatch({type: ACTIONS_TYPE.setObservations, value: e.target.value})}}
+              onChange={(e) => { dispatch({ type: ACTIONS_TYPE.setObservations, value: e.target.value }) }}
             />
           </div>
         </div>

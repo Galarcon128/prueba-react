@@ -15,7 +15,7 @@ export default function Data({ state, dispatch }) {
     window.open(link, "_blank"); // URL que deseas abrir
   };
   return (
-    <div style={{ position: "relative", marginTop: "15px", overflow: 'auto' }} >
+    <div style={{ position: "relative", marginTop: "15px" }} >
       <div style={{ position: "absolute", left: "-145px" }} >
         <p>Links Externos</p>
       </div>

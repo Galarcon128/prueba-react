@@ -68,7 +68,7 @@ export default function FinishDialog({
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Editar</Button>
-                    <Button onClick={handleAdd}>Agregar</Button>
+                    <Button onClick={handleAdd}>Enviar</Button>
                 </DialogActions>
             </Dialog>
         </>

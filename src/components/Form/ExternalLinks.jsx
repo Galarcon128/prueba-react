@@ -15,14 +15,14 @@ export default function Data({ state, dispatch }) {
     window.open(link, "_blank"); // URL que deseas abrir
   };
   return (
-    <div style={{ position: "relative", marginTop: "15px" }} >
+    <div style={{ position: "relative", marginTop: "15px", overflow: 'auto' }} >
       <div style={{ position: "absolute", left: "-145px" }} >
         <p>Links Externos</p>
       </div>
       <div>
         <br />
         <div>
-          <Stack spacing={3} direction="row">
+          <Stack spacing={1} direction="row">
             <Button variant="outlined" onClick={() => { handleOpenLink("https://listanominal.ine.mx/scpln/") }}>INE</Button>
             <Button variant="outlined" onClick={() => { handleOpenLink("https://www.gob.mx/curp/") }} >CURP</Button>
             <Button variant="outlined" onClick={() => { handleOpenLink("https://www.correosdemexico.gob.mx/sslservicios/consultacp/descarga.aspx") }} >SEPOMEX</Button>
@@ -31,8 +31,8 @@ export default function Data({ state, dispatch }) {
         </div>
         <br />
 
-      </div>
-      <table className={Style.table} style={{ width: '90%' }} >
+      </div >
+      <table className={Style.table}  >
         <thead>
           <tr>
             <th style={{ textAlign: 'left' }} >Seleciona tu respuesta de acuerdo al resultado de la busqueda</th>

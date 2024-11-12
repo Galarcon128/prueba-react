@@ -11,6 +11,7 @@ import FinishDialog from './FinishDialog';
 import useGetDataUser from './apiServices';
 import ExternalLinks from './ExternalLinks';
 import { ACTIONS_TYPE } from './statics';
+import useWindowWidth from '../MobileDetect';
 
 function SelectItem({
   options = [],
@@ -21,7 +22,6 @@ function SelectItem({
   error = false
 }) {
   const [expedient, setExpedient] = useState(select);
-
   const handleChange = (event) => {
     setExpedient(event.target.value);
     onSelectOption(options[event.target.value])
@@ -83,6 +83,7 @@ function reducer(state, action) {
 }
 
 export default function Form() {
+  const isMobile = useWindowWidth()
   const [state, dispatch] = useReducer(reducer, initialArgs)
   /*Simulacion de consumo de un servicio para obtener daltos */
   const userData = useGetDataUser()
@@ -96,19 +97,21 @@ export default function Form() {
   return (
     <div>
       <UserTable userData={userData} />
-      <div style={{ display: 'flex' }} >
+      <div style={{ display: !isMobile ? 'flex' : 'block' }} >
         <div>
           <SelectItem options={["captación", "crédito"]} label='Expediente' select={0} />
         </div>
+       
         <div>
           <TabIdentification docs={userData.docs} state={state} dispatch={dispatch} />
           <ExternalLinks state={state} dispatch={dispatch} />
         </div>
+        
       </div>
       <br />
-      <div style={{ border: '1px solid black', padding: "20px" }} >
+      <div style={{ border: '1px solid black', padding: "20px"}} >
         <p><b>Respuesta de Solicitud</b></p>
-        <div style={{ display: 'flex', gap: "20px" }} >
+        <div style={{ display: 'flex', gap: "20px", flexDirection: isMobile ? "column" : "row" }} >
           <div style={{ width: "450px" }}>
             <table style={{ width: "100%" }}>
               <tbody>

@@ -8,6 +8,9 @@ import MuiAppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import UserInfo from './UserInfo';
 import Progress from './Progress';
+import useWindowWidth from '../MobileDetect';
+
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -38,6 +41,7 @@ export default function Top({
     open,
     handleDrawerOpen
 }) {
+    const isMobile = useWindowWidth()
     return (
         <AppBar position="fixed" open={open}>
             <Toolbar>
@@ -55,6 +59,7 @@ export default function Top({
                 >
                     <MenuIcon color='primary' />
                 </IconButton>
+                
                 <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <FingerprintIcon color='primary' sx={{ fontSize: 25 }} />
@@ -62,10 +67,13 @@ export default function Top({
                             Biometricos
                         </Typography>
                     </div>
-                    <div style={{ minWidth: '30%', margin: '15px' }} >
+                    {!isMobile && (
+                        <div style={{ minWidth: '30%', margin: '15px' }} >
                         <UserInfo />
                         <Progress />
                     </div>
+                    )}
+                    
                 </div>
 
             </Toolbar>

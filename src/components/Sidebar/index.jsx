@@ -8,6 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Navbar from '../Navbar';
+import Movil from './Mobil';
+import useWindowWidth from '../MobileDetect';
 
 const drawerWidth = 240;
 
@@ -71,6 +73,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Sidebar({children}) {
     const theme = useTheme();
+    const isMobile = useWindowWidth()
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -83,6 +86,10 @@ export default function Sidebar({children}) {
 
     return (
         <Box sx={{ display: 'flex' }}>
+           {isMobile ? (
+            <Movil handleDrawerOpen={handleDrawerOpen} open={open} handleDrawerClose={handleDrawerClose} />
+           ):(
+            <>
             <CssBaseline />
             <Navbar handleDrawerOpen={handleDrawerOpen} open={open} />
             <Drawer variant="permanent" open={open}>
@@ -94,6 +101,8 @@ export default function Sidebar({children}) {
                 <Divider />
                 <Divider />
             </Drawer>
+            </>
+           )}
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                {children}
